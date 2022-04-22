@@ -1,0 +1,9 @@
+{
+  "filename": "NHQSBCompat.dll",
+  "author": "xen",
+  "name": "NH - QSB Compatability",
+  "uniqueName": "xen.NHQSBCompat",
+  "version": "0.1.0",
+  "owmlVersion": "2.3.2",
+  "dependencies": [ "xen.NewHorizons", "Raicuparta.QuantumSpaceBuddies" ]
+}

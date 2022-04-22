@@ -24,6 +24,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ModTemplate.csproj.user" />
+    <Reference Include="Raicuparta.QuantumSpaceBuddies">
+      <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\QSB.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NHQSBCompat.csproj.user" />
   </ItemGroup>
 </Project>
