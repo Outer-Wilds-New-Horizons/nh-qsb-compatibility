@@ -28,6 +28,9 @@
       <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\QSB.dll</HintPath>
 	  <Private>False</Private>
     </Reference>
+    <Reference Include="UniTask, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>UniTask.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="NHQSBCompat.csproj.user" />
