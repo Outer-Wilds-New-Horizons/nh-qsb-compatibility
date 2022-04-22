@@ -9,6 +9,8 @@ namespace NHQSBCompat
 {
     public interface INewHorizons
     {
+        string GetCurrentStarSystem();
+        
         UnityEvent<string> GetChangeStarSystemEvent();
 
         bool ChangeCurrentStarSystem(string name);

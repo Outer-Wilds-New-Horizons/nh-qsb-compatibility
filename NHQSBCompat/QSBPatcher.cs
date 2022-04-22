@@ -37,9 +37,12 @@ namespace NHQSBCompat
         
         public static void OnQSBWorldSyncBuildWorldObjects()
         {
-            List<WorldObjectManager> managers = QSBWorldSync.Managers.ToList();
-            managers.RemoveAll(m => ManagersToRemove.Contains(m.ToString()));
-            QSBWorldSync.Managers = managers.ToArray();
+            if (Main.Instance.NewHorizonsAPI.GetCurrentStarSystem() != "SolarSystem")
+            {
+                List<WorldObjectManager> managers = QSBWorldSync.Managers.ToList();
+                managers.RemoveAll(m => ManagersToRemove.Contains(m.ToString()));
+                QSBWorldSync.Managers = managers.ToArray();
+            }
         }
     }
 }
