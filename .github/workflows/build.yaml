@@ -38,9 +38,9 @@ jobs:
     - run: 7z x QSB-Download/QSB.zip
     
     - run: |
-        mv QSB/QSB NHQSBCompat/
+        mv QSB/ NHQSBCompat/
         $data = Get-Content NHQSBCompat/NHQSBCompat.csproj.user
-        $data = $data.Replace("<OuterWildsModsDirectory>`$(AppData)\OuterWildsModManager\OWML\Mods</OuterWildsModsDirectory>", "<OuterWildsModsDirectory>.</OuterWildsModsDirectory>")
+        $data = $data.Replace("<OuterWildsModsDirectory>$(AppData)\OuterWildsModManager\OWML\Mods</OuterWildsModsDirectory>", "<OuterWildsModsDirectory>.</OuterWildsModsDirectory>")
         $data | Out-File -encoding ASCII NHQSBCompat/NHQSBCompat.csproj.user
         
     # Set to Release if we're in main, otherwise keep us in Debug
