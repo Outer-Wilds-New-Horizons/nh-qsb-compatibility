@@ -38,7 +38,7 @@ jobs:
     - run: 7z x QSB-Download/QSB.zip
     
     - run: |
-        mv QSB/Raicuparta.QuantumSpaceBuddies NHQSBCompat/
+        mv QSB/QSB NHQSBCompat/
         $data = Get-Content NHQSBCompat/NHQSBCompat.csproj.user
         $data = $data.Replace("<OuterWildsModsDirectory>`$(AppData)\OuterWildsModManager\OWML\Mods</OuterWildsModsDirectory>", "<OuterWildsModsDirectory>.</OuterWildsModsDirectory>")
         $data | Out-File -encoding ASCII NHQSBCompat/NHQSBCompat.csproj.user
