@@ -40,7 +40,7 @@ jobs:
     - run: |
         mv QSB/ NHQSBCompat/
         $data = Get-Content NHQSBCompat/NHQSBCompat.csproj
-        $data = $data.Replace("$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies", "QSB")
+        $data = $data.Replace("`$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies", "QSB")
         $data | Out-File -encoding ASCII NHQSBCompat/NHQSBCompat.csproj
         
     # Set to Release if we're in main, otherwise keep us in Debug
