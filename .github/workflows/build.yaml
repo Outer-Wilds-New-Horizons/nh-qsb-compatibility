@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
   workflow_dispatch:
   
@@ -27,6 +27,21 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+    
+    - uses: robinraju/release-downloader@v1.3
+      with: 
+        repository: " misternebula/quantum-space-buddies"
+        latest: true
+        fileName: "QSB.zip"
+        out-file-path: "QSB-Download/"
+        
+    - run: 7z x QSB-Download/QSB.zip
+    
+    - run: |
+        mv QSB/ NHQSBCompat/
+        $data = Get-Content NHQSBCompat/NHQSBCompat.csproj.user
+        $data = $data.Replace("<OuterWildsModsDirectory>`$(AppData)\OuterWildsModManager\OWML\Mods</OuterWildsModsDirectory>", "<OuterWildsModsDirectory>.</OuterWildsModsDirectory>")
+        $data | Out-File -encoding ASCII NHQSBCompat/NHQSBCompat.csproj.user
         
     # Set to Release if we're in main, otherwise keep us in Debug
     - name: Set Release
