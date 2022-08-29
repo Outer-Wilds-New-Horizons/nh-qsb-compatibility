@@ -32,17 +32,13 @@ jobs:
       with: 
         repository: " misternebula/quantum-space-buddies"
         latest: true
-        fileName: "QSB.zip"
+        fileName: "QSB.zip" # TODO: change this to Raicuparta.QuantumSpaceBuddies.zip on next release
         out-file-path: "QSB-Download/"
         
-    - run: 7z x QSB-Download/QSB.zip
+    - run: 7z x QSB-Download/QSB.zip # TODO: change this to Raicuparta.QuantumSpaceBuddies.zip on next release
     
-    - run: |
-        mv QSB/ NHQSBCompat/
-        $data = Get-Content NHQSBCompat/NHQSBCompat.csproj
-        $data = $data.Replace("`$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies", "QSB")
-        $data | Out-File -encoding ASCII NHQSBCompat/NHQSBCompat.csproj
-        
+    - run: tree /F # bruh
+    
     # Set to Release if we're in main, otherwise keep us in Debug
     - name: Set Release
       if: github.ref == 'refs/heads/main'
@@ -53,8 +49,6 @@ jobs:
       run: echo "BUILD_TYPE=Debug" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
     
     - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: "5.0.x"
     - run: dotnet build -c $Env:BUILD_TYPE -o .\NHQSBCompat\Bin\$Env:BUILD_TYPE
     - uses: actions/upload-artifact@v2
       with:
