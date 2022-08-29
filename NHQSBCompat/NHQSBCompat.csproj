@@ -26,7 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="QSB">
-      <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\QSB.dll</HintPath>
+      <HintPath>QSB-nstrip.dll</HintPath>
 	  <Private>False</Private>
     </Reference>
     <Reference Include="Mirror">
