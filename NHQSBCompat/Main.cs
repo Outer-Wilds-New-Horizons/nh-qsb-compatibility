@@ -16,7 +16,6 @@ namespace NHQSBCompat
 
         public INewHorizons NewHorizonsAPI;
 
-
         public void Start()
         {
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
