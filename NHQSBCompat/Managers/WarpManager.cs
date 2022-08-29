@@ -39,6 +39,7 @@ public class WarpManager : MonoBehaviour
     {
         // Flag to not send a message
         RemoteWarp = true;
+
         if (!Main.Instance.NewHorizonsAPI.ChangeCurrentStarSystem(system))
         {
             // If you can't go to that system then you have to be disconnected
@@ -51,7 +52,11 @@ public class WarpManager : MonoBehaviour
 	{
 		public NHWarpMessage(string data) : base(data) { }
 
-		public override void OnReceiveRemote() => Instance.RemoteChangeStarSystem(Data);
+        public override void OnReceiveRemote()
+        {
+            Main.Log($"Player#{From} is telling Player#{To} to warp to {Data}");
+            Instance.RemoteChangeStarSystem(Data);
+        }
 	}
 }
 
