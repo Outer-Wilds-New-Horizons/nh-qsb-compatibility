@@ -20,6 +20,7 @@ internal class DestructionManager : MonoBehaviour
 		{
 			if (Main.Instance.NewHorizonsAPI.GetCurrentStarSystem() != "SolarSystem")
 			{
+				// Spams errors when a new player is joining a different star system
 				Destroy(FindObjectOfType<OrbitalProbeLaunchController>());
 			}
 		}
