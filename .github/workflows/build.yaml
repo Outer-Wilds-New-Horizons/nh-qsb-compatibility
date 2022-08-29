@@ -32,17 +32,11 @@ jobs:
       with: 
         repository: " misternebula/quantum-space-buddies"
         latest: true
-        fileName: "QSB.zip"
+        fileName: "Raicuparta.QuantumSpaceBuddies.zip"
         out-file-path: "QSB-Download/"
         
-    - run: 7z x QSB-Download/QSB.zip
+    - run: 7z x QSB-Download/Raicuparta.QuantumSpaceBuddies.zip
     
-    - run: |
-        mv QSB/ NHQSBCompat/
-        $data = Get-Content NHQSBCompat/NHQSBCompat.csproj
-        $data = $data.Replace("`$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies", "QSB")
-        $data | Out-File -encoding ASCII NHQSBCompat/NHQSBCompat.csproj
-        
     # Set to Release if we're in main, otherwise keep us in Debug
     - name: Set Release
       if: github.ref == 'refs/heads/main'
