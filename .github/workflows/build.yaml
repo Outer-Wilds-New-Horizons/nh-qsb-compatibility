@@ -37,6 +37,8 @@ jobs:
         
     - run: 7z x QSB-Download/QSB.zip # TODO: change this to Raicuparta.QuantumSpaceBuddies.zip on next release
     
+    - run: tree # bruh
+    
     # Set to Release if we're in main, otherwise keep us in Debug
     - name: Set Release
       if: github.ref == 'refs/heads/main'
