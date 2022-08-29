@@ -3,6 +3,9 @@ using OWML.Common;
 using OWML.ModHelper;
 using QSB.Messaging;
 using System.Reflection;
+using QSB;
+using QSB.Menus;
+using Mirror;
 
 namespace NHQSBCompat
 {
@@ -21,8 +24,6 @@ namespace NHQSBCompat
             if (kcpTransport) kcpTransport.Timeout = int.MaxValue;
 
 			Instance = this;
-
-            ModHelper.Console.WriteLine($"My mod {nameof(Main)} is loaded!", MessageType.Success);
 
             NewHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
             NewHorizonsAPI.GetChangeStarSystemEvent().AddListener(OnChangeStarSystem);
@@ -58,7 +59,12 @@ namespace NHQSBCompat
         {
             // Want to make sure that this one doesn't start sending messages too
             IsChangingSystem = true;
-            NewHorizonsAPI.ChangeCurrentStarSystem(system);
+            if(!NewHorizonsAPI.ChangeCurrentStarSystem(system))
+            {
+                // If you can't go to that system then you have to be disconnected
+                MenuManager.Instance.OnKicked($"You don't have the mod installed for {system}");
+                NetworkClient.Disconnect();
+            }
         }
 
         public static void Log(string msg) => Instance.ModHelper.Console.WriteLine(msg);

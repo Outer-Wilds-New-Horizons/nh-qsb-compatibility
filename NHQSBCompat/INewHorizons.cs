@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OWML.Common;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace NHQSBCompat
 {
-    public interface INewHorizons
+	public interface INewHorizons
     {
 		/// <summary>
 		/// Will load all configs in the regular folders (planets, systems, translations, etc) for this mod.
