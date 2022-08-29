@@ -6,6 +6,7 @@ using System.Reflection;
 using QSB;
 using QSB.Menus;
 using Mirror;
+using NHQSBCompat.Managers;
 
 namespace NHQSBCompat
 {
