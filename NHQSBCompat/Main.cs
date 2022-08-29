@@ -1,6 +1,8 @@
-﻿using OWML.Common;
+﻿using HarmonyLib;
+using OWML.Common;
 using OWML.ModHelper;
 using QSB.Messaging;
+using System.Reflection;
 
 namespace NHQSBCompat
 {
@@ -13,11 +15,16 @@ namespace NHQSBCompat
 
         public void Start()
         {
-            Instance = this;
+			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+
+            var kcpTransport = FindObjectOfType<kcp2k.KcpTransport>();
+            if (kcpTransport) kcpTransport.Timeout = int.MaxValue;
+
+			Instance = this;
 
             ModHelper.Console.WriteLine($"My mod {nameof(Main)} is loaded!", MessageType.Success);
 
-            NewHorizonsAPI = ModHelper.Interaction.GetModApi<INewHorizons>("xen.NewHorizons");
+            NewHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
             NewHorizonsAPI.GetChangeStarSystemEvent().AddListener(OnChangeStarSystem);
 
             LoadManager.OnCompleteSceneLoad += OnCompleteSceneLoad;
@@ -53,5 +60,7 @@ namespace NHQSBCompat
             IsChangingSystem = true;
             NewHorizonsAPI.ChangeCurrentStarSystem(system);
         }
-    }
+
+        public static void Log(string msg) => Instance.ModHelper.Console.WriteLine(msg);
+	}
 }
