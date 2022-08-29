@@ -32,10 +32,10 @@ jobs:
       with: 
         repository: " misternebula/quantum-space-buddies"
         latest: true
-        fileName: "Raicuparta.QuantumSpaceBuddies.zip"
+        fileName: "QSB.zip"
         out-file-path: "QSB-Download/"
         
-    - run: 7z x QSB-Download/Raicuparta.QuantumSpaceBuddies.zip
+    - run: 7z x QSB-Download/QSB.zip
     
     # Set to Release if we're in main, otherwise keep us in Debug
     - name: Set Release
