@@ -20,8 +20,6 @@ namespace NHQSBCompat
             NewHorizonsAPI = ModHelper.Interaction.GetModApi<INewHorizons>("xen.NewHorizons");
             NewHorizonsAPI.GetChangeStarSystemEvent().AddListener(OnChangeStarSystem);
 
-            QSBPatcher.Apply();
-
             LoadManager.OnCompleteSceneLoad += OnCompleteSceneLoad;
         }
 
