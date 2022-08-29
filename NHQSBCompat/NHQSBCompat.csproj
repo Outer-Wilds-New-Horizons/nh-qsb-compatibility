@@ -25,11 +25,15 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Raicuparta.QuantumSpaceBuddies">
-      <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\QSB.dll</HintPath>
+      <HintPath>$(OuterWildsModsDirectory)\QSB\QSB.dll</HintPath>
 	  <Private>False</Private>
     </Reference>
     <Reference Include="UniTask, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>UniTask.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror">
+	    <HintPath>$(OuterWildsModsDirectory)\QSB\Mirror.dll</HintPath>
+	    <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
