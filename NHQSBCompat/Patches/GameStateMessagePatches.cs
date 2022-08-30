@@ -2,7 +2,6 @@
 using Mirror;
 using NHQSBCompat.Managers;
 using QSB;
-using QSB.Patches;
 using QSB.Player;
 using QSB.SaveSync.Messages;
 
@@ -34,7 +33,7 @@ internal class GameStateMessagePatches
 		else
 		{
 			Main.Log($"Player#{QSBPlayerManager.LocalPlayerId} is being sent to {_initialSystem}");
-			WarpManager.Instance.RemoteChangeStarSystem(_initialSystem);
+			WarpManager.Instance.RemoteChangeStarSystem(_initialSystem, false, false);
 		}
 	}
 

@@ -29,6 +29,10 @@
       <HintPath>QSB-nstrip.dll</HintPath>
 	  <Private>False</Private>
     </Reference>
+	<Reference Include="NewHorizons">
+		<HintPath>$(OuterWildsModsDirectory)\xen.NewHorizons\NewHorizons.dll</HintPath>
+		<Private>False</Private>
+	</Reference>
     <Reference Include="Mirror">
 	    <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\Mirror.dll</HintPath>
 	    <Private>False</Private>

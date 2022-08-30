@@ -20,9 +20,6 @@ namespace NHQSBCompat
         {
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
-            var kcpTransport = FindObjectOfType<kcp2k.KcpTransport>();
-            if (kcpTransport) kcpTransport.Timeout = int.MaxValue;
-
 			Instance = this;
 
             NewHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
