@@ -23,8 +23,6 @@ namespace NHQSBCompat
 			Instance = this;
 
             NewHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
-
-            gameObject.AddComponent<DestructionManager>();
         }
 
         public static void Log(string msg) => Instance.ModHelper.Console.WriteLine(msg);
