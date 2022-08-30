@@ -24,7 +24,6 @@ namespace NHQSBCompat
 
             NewHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
 
-            gameObject.AddComponent<WarpManager>();
             gameObject.AddComponent<DestructionManager>();
         }
 

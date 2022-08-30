@@ -33,7 +33,7 @@ internal class GameStateMessagePatches
 		else
 		{
 			Main.Log($"Player#{QSBPlayerManager.LocalPlayerId} is being sent to {_initialSystem}");
-			WarpManager.Instance.RemoteChangeStarSystem(_initialSystem, false, false);
+			WarpManager.RemoteChangeStarSystem(_initialSystem, false, false);
 		}
 	}
 

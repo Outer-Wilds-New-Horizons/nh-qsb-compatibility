@@ -5,16 +5,15 @@ using QSB.Menus;
 using QSB.Messaging;
 using QSB.Player;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace NHQSBCompat.Managers;
 
-public class WarpManager : MonoBehaviour
+public static class WarpManager
 {
-    public static WarpManager Instance;
-
     internal static bool RemoteWarp = false;
 
-    public void RemoteChangeStarSystem(string system, bool ship, bool vessel)
+    public static void RemoteChangeStarSystem(string system, bool ship, bool vessel)
     {
         // Flag to not send a message
         RemoteWarp = true;
@@ -22,46 +21,61 @@ public class WarpManager : MonoBehaviour
 		if (!NewHorizons.Main.SystemDict.ContainsKey(system))
 		{
             // If you can't go to that system then you have to be disconnected
-            MenuManager.Instance.OnKicked($"You don't have the mod installed for {system}");
+            var msg = $"You don't have the mod installed for {system}";
+            Main.Log(msg);
+			MenuManager.Instance.OnKicked(msg);
             NetworkClient.Disconnect();
         }
         else
         {
+            Main.Log($"Remote request received to go to {system}");
             NewHorizons.Main.Instance.ChangeCurrentStarSystem(system, ship, vessel);
 		}
     }
 
-	public class NHWarpMessage : QSBMessage<(string starSystem, bool shipWarp, bool vesselWarp)>
+	public class NHWarpMessage : QSBMessage
 	{
-		public NHWarpMessage(string starSystem, bool shipWarp, bool vesselWarp) : base((starSystem, shipWarp, vesselWarp)) { }
+        private string _starSystem;
+        private bool _shipWarp;
+        private bool _vesselWarp;
 
-        public override void OnReceiveRemote()
+		public NHWarpMessage(string starSystem, bool shipWarp, bool vesselWarp) : base() 
         {
-            Main.Log($"Player#{From} is telling Player#{To} to warp to {Data.starSystem}");
-            if (QSBCore.IsHost)
+			_starSystem = starSystem;
+			_shipWarp = shipWarp;
+			_vesselWarp = vesselWarp;
+        }
+
+        public override void Serialize(NetworkWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write(_starSystem);
+            writer.Write(_shipWarp);
+            writer.Write(_vesselWarp);
+        }
+
+		public override void Deserialize(NetworkReader reader)
+		{
+			base.Deserialize(reader);
+
+			_starSystem = reader.Read<string>();
+			_shipWarp = reader.Read<bool>();
+			_vesselWarp = reader.Read<bool>();
+		}
+
+		public override void OnReceiveRemote()
+        {
+            Main.Log($"Player#{From} is telling Player#{To} to warp to {_starSystem}");
+            if (QSBCore.IsHost && !NewHorizons.Main.SystemDict.ContainsKey(_starSystem))
             {
-				if (!NewHorizons.Main.SystemDict.ContainsKey(Data.starSystem))
-                {
-                    // If the host doesn't have that system then we can't
-                    Main.Log($"The host doesn't have {Data.starSystem} installed: aborting");
-                }
-                else
-                {
-					// The host will tell all other users to warp
-					new NHWarpMessage(Data.starSystem, Data.shipWarp, Data.vesselWarp).Send();
-				}
+                // If the host doesn't have that system then we can't
+                Main.Log($"The host doesn't have {_starSystem} installed: aborting");
 			}
             else
             {
-                if (From == 0)
-                {
-					// Clients being told to warp by the host
-					Instance.RemoteChangeStarSystem(Data.starSystem, Data.shipWarp, Data.vesselWarp);
-				}
-                else
-                {
-                    Main.Log("A client tried to tell another client to warp (has to go through host -> this shouldn't happen)");
-                }
+                if (QSBCore.IsHost) new NHWarpMessage(_starSystem, _shipWarp, _vesselWarp).Send();
+				RemoteChangeStarSystem(_starSystem, _shipWarp, _vesselWarp);
 			}
 		}
 	}
@@ -80,17 +94,20 @@ public class WarpManager : MonoBehaviour
 				return true;
 			}
 
+            Main.Log($"Local request received to go to {newStarSystem}");
 			if (QSBCore.IsHost)
             {
 				// The host will tell all other users to warp
-				new NHWarpMessage(newStarSystem, warp, vessel).Send();
+				Main.Log($"Host: Telling others to go to {newStarSystem}");
+				new NHWarpMessage(newStarSystem, false, vessel).Send();
                 // The host can now warp 
                 return true;
 			}
             else
             {
 				// We're a client that has to tell the host to start warping people
-				new NHWarpMessage(newStarSystem, warp, vessel) { To = 0 }.Send();
+				Main.Log($"Client: Telling host to send us to {newStarSystem}");
+				new NHWarpMessage(newStarSystem, false, vessel) { To = 0 }.Send();
 
                 // We have to wait for the host to get back to us
                 return false;
