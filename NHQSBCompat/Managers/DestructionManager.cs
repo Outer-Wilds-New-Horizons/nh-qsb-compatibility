@@ -4,6 +4,7 @@ namespace NHQSBCompat.Managers;
 
 internal class DestructionManager : MonoBehaviour
 {
+	/*
 	public void Awake()
 	{
 		LoadManager.OnCompleteSceneLoad += OnCompleteSceneLoad;
@@ -25,4 +26,5 @@ internal class DestructionManager : MonoBehaviour
 			}
 		}
 	}
+*/
 }

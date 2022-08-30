@@ -18,6 +18,7 @@ public static class QSBWorldSyncPatches
 		"ModelShipManager"
 	};
 
+	/*
 	[HarmonyPrefix]
 	[HarmonyPatch(typeof(QSBWorldSync), nameof(QSBWorldSync.BuildWorldObjects))]
 	private static void QSBWorldSync_BuildWorldObjects()
@@ -29,4 +30,5 @@ public static class QSBWorldSyncPatches
 			QSBWorldSync.Managers = managers.ToArray();
 		}
 	}
+*/
 }
