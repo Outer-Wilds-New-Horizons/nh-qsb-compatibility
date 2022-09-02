@@ -4,6 +4,7 @@ using QSB;
 using QSB.Menus;
 using QSB.Messaging;
 using QSB.Player;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,22 +14,50 @@ public static class WarpManager
 {
     internal static bool RemoteWarp = false;
 
-    public static void RemoteChangeStarSystem(string system, bool ship, bool vessel)
+    private static void Kick(string reason)
+    {
+		Main.Log(reason);
+		MenuManager.Instance.OnKicked(reason);
+		NetworkClient.Disconnect();
+	}
+
+    public static void RemoteChangeStarSystem(string system, bool ship, bool vessel, int[] hostAddonHash)
     {
         // Flag to not send a message
         RemoteWarp = true;
 
+		Main.Log($"Remote request received to go to {system}");
+
 		if (!NewHorizons.Main.SystemDict.ContainsKey(system))
 		{
             // If you can't go to that system then you have to be disconnected
-            var msg = $"You don't have the mod installed for {system}";
-            Main.Log(msg);
-			MenuManager.Instance.OnKicked(msg);
-            NetworkClient.Disconnect();
+            Kick($"You don't have the mod installed for {system}");
         }
         else
         {
-            Main.Log($"Remote request received to go to {system}");
+            var localHash = Main.HashAddonsForSystem(system);
+            if (localHash != hostAddonHash)
+            {
+                var missingAddonHashes = hostAddonHash.Except(localHash);
+                var extraAddonHashes = localHash.Except(hostAddonHash);
+
+                if (missingAddonHashes.Count() > 0)
+                {
+                    Kick($"You are missing {missingAddonHashes.Count()} addon(s) that effect {system}");
+                    return;
+                }
+                if (extraAddonHashes.Count() > 0)
+                {
+                    var extraMods = extraAddonHashes.Select(x => Main.HashToMod(x));
+
+                    // TODO: Disable these mods for the client and do not kick them
+
+					Kick($"You have {extraAddonHashes.Count()} extra addon(s) that effect {system}. Check the logs.");
+                    Main.Log($"You have mods affecting {system} that the host does not: {string.Join(", ", extraMods)}");
+					return;
+				}
+            }
+
             NewHorizons.Main.Instance.ChangeCurrentStarSystem(system, ship, vessel);
 		}
     }
@@ -75,7 +104,7 @@ public static class WarpManager
             else
             {
                 if (QSBCore.IsHost) new NHWarpMessage(_starSystem, _shipWarp, _vesselWarp).Send();
-				RemoteChangeStarSystem(_starSystem, _shipWarp, _vesselWarp);
+				RemoteChangeStarSystem(_starSystem, _shipWarp, _vesselWarp, Main.HashAddonsForSystem(_starSystem));
 			}
 		}
 	}

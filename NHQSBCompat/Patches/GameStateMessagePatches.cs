@@ -4,6 +4,7 @@ using NHQSBCompat.Managers;
 using QSB;
 using QSB.Player;
 using QSB.SaveSync.Messages;
+using System.Linq;
 
 namespace NHQSBCompat.Patches;
 
@@ -11,16 +12,29 @@ namespace NHQSBCompat.Patches;
 internal class GameStateMessagePatches
 {
 	private static string _initialSystem;
+	private static int[] _hostAddonHash;
+
+
 
 	[HarmonyPostfix]
 	[HarmonyPatch(typeof(GameStateMessage), nameof(GameStateMessage.Serialize))]
-	public static void GameStateMessage_Serialize(GameStateMessage __instance, NetworkWriter writer) =>
-		writer.Write(Main.Instance.NewHorizonsAPI.GetCurrentStarSystem());
+	public static void GameStateMessage_Serialize(GameStateMessage __instance, NetworkWriter writer)
+	{
+		var currentSystem = Main.Instance.NewHorizonsAPI.GetCurrentStarSystem();
+
+		writer.Write(currentSystem);
+		writer.WriteArray(Main.HashAddonsForSystem(currentSystem));
+	}
+
 
 	[HarmonyPostfix]
 	[HarmonyPatch(typeof(GameStateMessage), nameof(GameStateMessage.Deserialize))]
-	public static void GameStateMessage_Deserialize(GameStateMessage __instance, NetworkReader reader) =>
+	public static void GameStateMessage_Deserialize(GameStateMessage __instance, NetworkReader reader)
+	{
 		_initialSystem = reader.Read<string>();
+		_hostAddonHash = reader.ReadArray<int>();
+	}
+
 
 	[HarmonyPostfix]
 	[HarmonyPatch(typeof(GameStateMessage), nameof(GameStateMessage.OnReceiveRemote))]
@@ -33,7 +47,8 @@ internal class GameStateMessagePatches
 		else
 		{
 			Main.Log($"Player#{QSBPlayerManager.LocalPlayerId} is being sent to {_initialSystem}");
-			WarpManager.RemoteChangeStarSystem(_initialSystem, false, false);
+
+			WarpManager.RemoteChangeStarSystem(_initialSystem, false, false, _hostAddonHash);
 		}
 	}
 
