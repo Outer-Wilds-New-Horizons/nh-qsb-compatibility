@@ -28,17 +28,6 @@ jobs:
 
     - uses: actions/checkout@v2
     
-    - uses: robinraju/release-downloader@v1.3
-      with: 
-        repository: " misternebula/quantum-space-buddies"
-        latest: true
-        fileName: "QSB.zip" # TODO: change this to Raicuparta.QuantumSpaceBuddies.zip on next release
-        out-file-path: "QSB-Download/"
-        
-    - run: 7z x QSB-Download/QSB.zip # TODO: change this to Raicuparta.QuantumSpaceBuddies.zip on next release
-    
-    - run: tree /F # bruh
-    
     # Set to Release if we're in main, otherwise keep us in Debug
     - name: Set Release
       if: github.ref == 'refs/heads/main'

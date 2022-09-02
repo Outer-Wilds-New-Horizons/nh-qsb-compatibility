@@ -25,21 +25,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="QSB">
-      <HintPath>QSB-nstrip.dll</HintPath>
-	  <Private>False</Private>
-    </Reference>
-	<Reference Include="NewHorizons">
-		<HintPath>$(OuterWildsModsDirectory)\xen.NewHorizons\NewHorizons.dll</HintPath>
-		<Private>False</Private>
-	</Reference>
-    <Reference Include="Mirror">
-	    <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\Mirror.dll</HintPath>
-	    <Private>False</Private>
-    </Reference>
-    <Reference Include="UniTask">
-        <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\UniTask.dll</HintPath>
-        <Private>False</Private>
+    <Reference Include="lib\*.dll">
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
