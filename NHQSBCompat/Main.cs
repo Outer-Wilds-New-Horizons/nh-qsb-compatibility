@@ -6,6 +6,7 @@ using System.Reflection;
 using QSB;
 using QSB.Menus;
 using Mirror;
+using NewHorizons;
 using NHQSBCompat.Managers;
 using System.Linq;
 using System.Collections.Generic;
