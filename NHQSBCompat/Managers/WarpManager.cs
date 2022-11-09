@@ -46,6 +46,7 @@ public static class WarpManager
                     Kick($"You are missing {missingAddonHashes.Count()} addon(s) that effect {system}");
                     return;
                 }
+
                 if (extraAddonHashes.Count() > 0)
                 {
                     var extraMods = extraAddonHashes.Select(x => Main.HashToMod(x));
@@ -103,7 +104,11 @@ public static class WarpManager
 			}
             else
             {
-                if (QSBCore.IsHost) new NHWarpMessage(_starSystem, _shipWarp, _vesselWarp).Send();
+                if (QSBCore.IsHost)
+				{
+					new NHWarpMessage(_starSystem, _shipWarp, _vesselWarp).Send();
+				}
+
 				RemoteChangeStarSystem(_starSystem, _shipWarp, _vesselWarp, Main.HashAddonsForSystem(_starSystem));
 			}
 		}
@@ -155,5 +160,3 @@ public static class WarpManager
         }
     }
 }
-
-
